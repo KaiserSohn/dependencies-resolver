@@ -1,0 +1,20 @@
+{
+  "name": "kaisersohn/dependencies-resolver",
+  "description": "Никому не нужное говно",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "KaiserSohn",
+      "email": "kaisersohn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "DependenciesResolver\\" : "src"
+    }
+  }
+}
