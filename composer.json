@@ -1,6 +1,6 @@
 {
   "name": "kaisersohn/dependencies-resolver",
-  "description": "Никому не нужное говно",
+  "description": "Dependencies resolver",
   "type": "library",
   "license": "MIT",
   "authors": [
