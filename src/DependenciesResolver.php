@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DependenciesResolver;
 
 /**
@@ -28,10 +30,6 @@ class DependenciesResolver
 
             if (is_array($values)) {
                 foreach ($values as $value) {
-                    if ($value === $currentElement) {
-                        continue;
-                    }
-
                     if ($value === $rootKey) {
                         throw new LoopException('Loop detected');
                     }
@@ -44,14 +42,30 @@ class DependenciesResolver
                         }
                     } elseif ($currentElement) {
                         $result[] = $value;
-                    } else {
-                        $result[$key][] = $value;
                     }
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @param $array
+     * @param $needle
+     *
+     * @return bool
+     */
+    private function arrayKeyExistsRecursive($array, $needle): bool
+    {
+        foreach ($array as $key => $item) {
+            if ($key === $needle) {
+                return true;
+            } elseif (is_array($item) && $this->arrayKeyExistsRecursive($item, $needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -99,7 +113,18 @@ class DependenciesResolver
     public function tree(array $array): ?array
     {
         try {
-            return $this->treeResolver($array);
+            $result = $this->treeResolver($array);
+
+            foreach ($result as $key => $value) {
+                $temp = $value;
+                unset($result[$key]);
+
+                if (!$this->arrayKeyExistsRecursive($result, $key)) {
+                    $result[$key] = $temp;
+                }
+            }
+
+            return $result;
         } catch (LoopException $loopException) {
             return null;
         }

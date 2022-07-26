@@ -6,6 +6,10 @@ namespace DependenciesResolver;
 
 use Exception;
 
+/**
+ * Class LoopException
+ * @package DependenciesResolver
+ */
 class LoopException extends Exception
 {
 
